@@ -1,6 +1,6 @@
 [Project]
-FileName=playing game functions.dev
-Name=playing game functions
+FileName=exe file.dev
+Name=exe file
 Type=1
 Ver=2
 ObjFiles=
@@ -51,7 +51,7 @@ AutoIncBuildNr=0
 SyncProduct=1
 
 [Unit1]
-FileName=playing game functions.c
+FileName=exe file_.c
 CompileCpp=0
 Folder=
 Compile=1
