@@ -46,7 +46,7 @@ int getCardNum(int cardnum) {
 		num[i] = cardnum;
 	
 	
-	
+		//put the actual number to the cardtray	
 		if(cardnum % 13 == 0)
 		{
 			if(cardSum[N_MAX_USER] > 10)
@@ -97,9 +97,11 @@ int getCardNum(int cardnum) {
 	
 	
 	}
+	
 	return CardTray[cardnum];
-
 }
+
+
 
 //print the card information (e.g. DiaA)
 void printCard(int cardnum) {
@@ -208,151 +210,10 @@ void printCard(int cardnum) {
 		}
 		
 	}
-
-}
-//card array controllers -------------------------------
-
-//mix the card sets and put in the array
-int mixCardTray(void) {
 	
-	int cardnum;
 	
-	//CardTray[N_CARDSET*N_CARD];
-	cardnum = rand()%(N_CARD);
-	printCard(cardnum);
 	
-
-	return CardTray[cardnum];		//-_- 
-}
-
-//get one card from the tray
-int pullCard(void) {
-	
-	int card;
-	cardIndex++;
-    printCard(CardTray[cardIndex]);
-	
-	return ;
 	
 }
 
 
-//playing game functions -----------------------------
-
-
-//player settiing
-int configUser(void) {
-	
-
-	do
-	{
-		printf("Input the number of players (MAX:5) : ");
-		scanf("%d", &n_user);
-		
-		if((n_user<=0) || (n_user>5))
-			printf("the number of players should be between 1 and 5\n");
-			
-	}while((n_user<=0) || (n_user>5));
-	
-	printf(" --> card is mixed and put into the tray\n");
-	
-	return n_user;
-
-}
-//betting
-int betDollar(void) {
-	
-	int n;		
-	
-		for(n=0; n<=N_MAX_USER; n++)
-		{
-			dollar[n]=N_DOLLAR;
-		}
-	
-	printf("------ BETTING STEP ------\n");
-	
-	do{
-		printf("\t-> your betting (total: %d) : ", dollar[0]);
-		scanf("%d", &bet[0]);
-		
-		if(bet[0]<0)
-		{
-			printf("\t-> invalid input for betting %d\n", bet[0]);
-		}
-		else if(bet[0]>dollar[0])
-		{
-			printf("\t-> you only have $%d! bet again\n", dollar[0]);
-		}
-		
-	}while((bet[0]<0) || (bet[0]>dollar[0]));
-	
-	
-	for(n=1; n<n_user; n++)
-		{
-			bet[n]=rand()%N_MAX_BET+1;
-			printf("\t-> player%d bets $%d (out of $%d)\n", n, bet[n], dollar[n]);
-		}	
-	printf("---------------------");					
-
-	return dollar[N_MAX_USER];
-}
-
-
-//offering initial 2 cards
-void offerCards(void) {
-	int i;
-	//1. give two card for each players
-	for (i=0;i<n_user;i++)
-	{
-		cardhold[i][0] = pullCard();
-		cardhold[i][1] = pullCard();	//int cardhold[N_MAX_USER+1][N_MAX_CARDHOLD(10)];
-										//cards that currently the players hold
-	}
-	//2. give two card for the operator
-	cardhold[n_user][0] = pullCard();
-	cardhold[n_user][1] = pullCard();
-	
-	return;
-}
-//print initial card status
-void printCardInitialStatus(void) {
-	
-	int n;
-	
-	printf("\n\n-------- CARD OFFERING ------------\n");
-	printf("--- server : X ");
-	pullCard();
-	printf("\n\t-> you       : ");
-	pullCard(); pullCard();
-	
-	for(n=1; n<n_user; n++)
-	{
-		printf("\n\t-> player%d   : ", n);
-		pullCard(); pullCard();
-	}
-}
-
-
-int main(int argc, char *argv[]) {
-
-	int i;
-	
-	for(i=0; i<52; i++){
-		
-		printCard(i);
-		//printf("%c %d\n", printCard(i), CardTray[i]);
-	}
-	
-	configUser();
-	mixCardTray();
-	betDollar();
-	
-	
-	
-	pullCard();
-	pullCard();
-	pullCard();
-	pullCard();
-	pullCard();
-	printCardInitialStatus();
-}

@@ -46,7 +46,7 @@ int getCardNum(int cardnum) {
 		num[i] = cardnum;
 	
 	
-	
+		//put the actual number to the cardtray	
 		if(cardnum % 13 == 0)
 		{
 			if(cardSum[N_MAX_USER] > 10)
@@ -97,9 +97,11 @@ int getCardNum(int cardnum) {
 	
 	
 	}
+	
 	return CardTray[cardnum];
-
 }
+
+
 
 //print the card information (e.g. DiaA)
 void printCard(int cardnum) {
@@ -208,8 +210,14 @@ void printCard(int cardnum) {
 		}
 		
 	}
-
+	
+	
+	
+	
 }
+
+
+
 //card array controllers -------------------------------
 
 //mix the card sets and put in the array
@@ -217,7 +225,7 @@ int mixCardTray(void) {
 	
 	int cardnum;
 	
-	//CardTray[N_CARDSET*N_CARD];
+
 	cardnum = rand()%(N_CARD);
 	printCard(cardnum);
 	
@@ -232,13 +240,11 @@ int pullCard(void) {
 	cardIndex++;
     printCard(CardTray[cardIndex]);
 	
-	return ;
+	return CardTray[cardIndex];
 	
 }
 
-
 //playing game functions -----------------------------
-
 
 //player settiing
 int configUser(void) {
@@ -254,21 +260,17 @@ int configUser(void) {
 			
 	}while((n_user<=0) || (n_user>5));
 	
-	printf(" --> card is mixed and put into the tray\n");
+	printf("\n --> card is mixed and put into the tray");
 	
 	return n_user;
 
 }
+
 //betting
 int betDollar(void) {
 	
 	int n;		
-	
-		for(n=0; n<=N_MAX_USER; n++)
-		{
-			dollar[n]=N_DOLLAR;
-		}
-	
+		
 	printf("------ BETTING STEP ------\n");
 	
 	do{
@@ -277,11 +279,11 @@ int betDollar(void) {
 		
 		if(bet[0]<0)
 		{
-			printf("\t-> invalid input for betting %d\n", bet[0]);
+			printf("\t->invalid input for betting %d\n", bet[0]);
 		}
 		else if(bet[0]>dollar[0])
 		{
-			printf("\t-> you only have $%d! bet again\n", dollar[0]);
+			printf("\t->you only have $%d! bet again\n", dollar[0]);
 		}
 		
 	}while((bet[0]<0) || (bet[0]>dollar[0]));
@@ -290,11 +292,12 @@ int betDollar(void) {
 	for(n=1; n<n_user; n++)
 		{
 			bet[n]=rand()%N_MAX_BET+1;
-			printf("\t-> player%d bets $%d (out of $%d)\n", n, bet[n], dollar[n]);
+			printf("\t->player%d bets $%d (out of $%d)\n", n, bet[n], dollar[n]);
 		}	
 	printf("---------------------");					
 
 	return dollar[N_MAX_USER];
+	
 }
 
 
@@ -314,6 +317,7 @@ void offerCards(void) {
 	
 	return;
 }
+
 //print initial card status
 void printCardInitialStatus(void) {
 	
@@ -333,26 +337,105 @@ void printCardInitialStatus(void) {
 }
 
 
-int main(int argc, char *argv[]) {
-
-	int i;
+int getAction(void) {
 	
-	for(i=0; i<52; i++){
-		
-		printCard(i);
-		//printf("%c %d\n", printCard(i), CardTray[i]);
+	int action;			//action that you choose
+	
+	printf("Action? (0 - go, others - stay) : ");
+	scanf("%d", action);
+	
+	if(action == 0)
+	{
+	
+	}
+	else
+	{
+
 	}
 	
+}
+
+
+void printUserCardStatus(int user, int cardcnt) {
+	int i;
+	
+	printf("   -> card : ");
+	for (i=0;i<cardcnt;i++)
+		printCard(cardhold[user][i]);
+	printf("\t ::: ");
+}
+
+
+
+
+// calculate the card sum and see if : 1. under 21, 2. over 21, 3. blackjack
+int calcStepResult() {
+	
+}
+
+int checkResult() {
+	
+}
+
+int checkWinner() {
+	
+}
+
+
+int main(int argc, char *argv[]) {
+	int roundIndex = 0;
+	int max_user;
+	int i;
+	
+	srand((unsigned)time(NULL));
+	
+	//set the number of players
 	configUser();
+
+
+	//Game initialization --------
+	//1. players' dollar			
+	for(i=0; i<=N_MAX_USER; i++)
+	{
+		dollar[i]=N_DOLLAR;			//assign initial dollar
+	}						
+	//2. card tray
 	mixCardTray();
-	betDollar();
+
+
+
+	//Game start --------
+	do {
+				
+		betDollar();
+		offerCards(); //1. give cards to all the players
+		
+		printCardInitialStatus();
+		printf("\n------------------ GAME start --------------------------\n");
+	//Round turn
+	do{
+		roundIndex++;
+		printf("-----------------------------------------");
+		printf("--------ROUND %d(cardIndex:%d)-----------", roundIndex, cardIndex);
+		printf("-----------------------------------------\n\n");
+		//each player's turn
+		for (i=0; i<=n_user; i++) //each player
+		{
+			while () //do until the player dies or player says stop
+			{
+				//print current card status printUserCardStatus();
+				//check the card status ::: calcStepResult()
+				//GO? STOP? ::: getAction()
+				//check if the turn ends or not
+			}
+		}
+		
+		//result
+		checkResult();
+	} while (gameEnd == 0);
+	
+	checkWinner();
 	
 	
-	
-	pullCard();
-	pullCard();
-	pullCard();
-	pullCard();
-	pullCard();
-	printCardInitialStatus();
+	return 0;
 }
